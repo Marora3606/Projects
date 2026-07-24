@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Hi, I'm Manan Arora
 
 AI & Data Science Student at Middlesex University Dubai
