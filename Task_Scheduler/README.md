@@ -1,44 +1,27 @@
 # Task Scheduler
 
-A simple command-line task management application built in Python.
+A Python task scheduling application to organize daily tasks.
 
-## What it does
+## Features
 
-This project lets you:
+- Add Tasks
 
-- add tasks
-- remove tasks
-- edit tasks
-- view all saved tasks
-- search tasks
-- view task statistics
+- Delete Tasks
 
-## Project structure
+- Manage Schedule
 
-- `main.py` starts the interactive app
-- `menu.py` contains the menu and user interface logic
-- `scheduler.py` manages task storage and operations
-- `task.py` defines the task model
-- `utils.py` contains helper functions
-- `requirements.txt` lists Python dependencies
+## Technologies
 
-## Run it
+- Python
 
-From the workspace root:
+## Future Improvements
 
-```bash
-cd /Users/user/Desktop/projects/Task_Scheduler
-source /Users/user/Desktop/projects/.venv/bin/activate
-python main.py
-```
+- Notifications
 
-Or, if you are already inside the virtual environment:
+- Calendar Integration
 
-```bash
-cd Task_Scheduler
-python main.py
-```
+- GUI
 
-## Notes
+## Author
 
-The folder is now stored as a normal project directory in the workspace so it can be opened and launched directly.
+Manan Arora
