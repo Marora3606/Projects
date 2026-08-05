@@ -1,4 +1,4 @@
-# IMDB Rating Prediction System
+# CineScore Movie Rating Predictor
 
 Machine learning project that predicts movie ratings using movie metadata.
 

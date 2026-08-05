@@ -1,4 +1,4 @@
-# Dijkstra Route Finder
+# Path Finder
 
 Implementation of Dijkstra's Shortest Path Algorithm.
 

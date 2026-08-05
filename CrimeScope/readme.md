@@ -1,4 +1,4 @@
-# Crime Data Analysis & Visualization
+# Crime Scope
 
 A data analysis project that explores crime trends using Python.
 

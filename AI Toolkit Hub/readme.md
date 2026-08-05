@@ -1,4 +1,4 @@
-# AI Dashboard
+# AI Toolkit Hub
 
 An AI-powered dashboard built with Streamlit that provides multiple AI tools through a simple web interface.
 

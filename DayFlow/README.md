@@ -1,4 +1,4 @@
-# Task Scheduler
+# Day Flow
 
 A Python task scheduling application to organize daily tasks.
 
