@@ -24,7 +24,7 @@ try:
     """)
     conn.commit()
 except Exception as e:
-    st.exception(f"FATAL: Database initialization failed during table creation.")
+    st.exception(f"FATAL: Database initialization failed during table creation: {e}")
     st.stop()
 finally:
     if conn:

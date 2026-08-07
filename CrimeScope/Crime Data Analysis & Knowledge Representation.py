@@ -20,17 +20,18 @@ from scipy.stats import norm
 print("Starting Question 1")
 
 # Define the zip file name and the target extraction directory
-zip_name = "27d1328a9d866c8330c411a3a9e5b517314b8bea.zip"
-extract_dir = "."  # Extract to the current directory
+base_dir = os.path.dirname(os.path.abspath(__file__))
+zip_name = os.path.join(base_dir, "27d1328a9d866c8330c411a3a9e5b517314b8bea.zip")
+extract_dir = base_dir
 
-# If the expected zip file is not present, use the first zip found in the cwd.
+# If the expected zip file is not present, use the first zip found in the project folder.
 if not os.path.exists(zip_name):
-    zip_candidates = glob.glob("*.zip")
+    zip_candidates = glob.glob(os.path.join(base_dir, "*.zip"))
     if zip_candidates:
         zip_name = zip_candidates[0]
-        print(f"Using zip file '{zip_name}' found in the current directory.")
+        print(f"Using zip file '{os.path.basename(zip_name)}' found in the project directory.")
     else:
-        print(f"'{zip_name}' not found. Please ensure the zip file is uploaded.")
+        print(f"'{os.path.basename(zip_name)}' not found. Please ensure the zip file is uploaded.")
 
 
 # Question 1a: Load and Clean Data

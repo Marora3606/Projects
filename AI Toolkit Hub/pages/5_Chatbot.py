@@ -14,11 +14,13 @@ if "logged_in" not in st.session_state or not st.session_state.logged_in:
     st.stop()
 
 # Initialize OpenAI client
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+api_key = st.secrets.get("OPENAI_API_KEY")
+base_url = st.secrets.get("OPENAI_BASE_URL", "https://api.bluesminds.com/v1")
+client = OpenAI(api_key=api_key, base_url=base_url, timeout=30.0)
 
 # Title
 st.title("💬 ChatGPT - OpenAI API")
-st.caption("Powered by GPT-4o")
+st.caption("Powered by AI Models")
 
 # Domain-specific system prompts
 DOMAIN_PROMPTS = {
@@ -79,10 +81,16 @@ with st.sidebar:
         st.rerun()
     
     # Model selection
+    try:
+        models_data = client.models.list()
+        available_models = [m.id for m in models_data.data] if models_data and hasattr(models_data, 'data') and len(models_data.data) > 0 else ["gpt-5.5", "gpt-4o-mini"]
+    except Exception:
+        available_models = ["gpt-5.5", "gpt-4o-mini", "gpt-4o"]
+
     model = st.selectbox(
         "Model",
-        ["gpt-4o", "gpt-4o-mini"],
-        index=1
+        available_models,
+        index=0
     )
 
 # Display all previous messages
@@ -109,30 +117,27 @@ if prompt:
         {"role": "system", "content": DOMAIN_PROMPTS[st.session_state.selected_domain]}
     ] + st.session_state.messages
     
-    # Call OpenAI API with streaming
-    with st.spinner("Thinking..."):
-        completion = client.chat.completions.create(
-            model=model,
-            messages=messages_with_system,
-            stream=True
-        )
-    
-    # Display streaming response
+    # Call OpenAI API with fallback and error handling
     with st.chat_message("assistant"):
-        container = st.empty()
-        full_reply = ""
-        
-        for chunk in completion:
-            delta = chunk.choices[0].delta
-            if delta.content:
-                full_reply += delta.content
-                container.markdown(full_reply + "▌")  # Add cursor effect
-        
-        # Remove cursor and show final response
-        container.markdown(full_reply)
-    
-    # Save assistant response
-    st.session_state.messages.append({
-        "role": "assistant",
-        "content": full_reply
-    })
+        with st.spinner("Thinking..."):
+            try:
+                completion = client.chat.completions.create(
+                    model=model,
+                    messages=messages_with_system,
+                    stream=False
+                )
+                full_reply = completion.choices[0].message.content or "No response content returned."
+                st.markdown(full_reply)
+                
+                # Save assistant response
+                st.session_state.messages.append({
+                    "role": "assistant",
+                    "content": full_reply
+                })
+            except Exception as e:
+                error_msg = str(e)
+                st.error(f"⚠️ API Response Error: {error_msg}")
+                if "504" in error_msg or "timeout" in error_msg.lower():
+                    st.info("💡 The API Proxy gateway timed out. Please click send again in a moment.")
+                elif "403" in error_msg or "access" in error_msg.lower():
+                    st.info(f"💡 The model '{model}' is not accessible on your API key. Try switching model in the sidebar.")

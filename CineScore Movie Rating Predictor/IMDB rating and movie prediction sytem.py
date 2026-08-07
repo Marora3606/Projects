@@ -1,3 +1,6 @@
+import os
+from pathlib import Path
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import Ridge, LinearRegression
@@ -20,7 +23,9 @@ import numpy as np
 # R2 scores show the distance from actual ratings, while MAE shows average error in rating points
 
 # Load data as 'movies'
-movies = pd.read_csv("imdb_top_1000.csv")
+base_dir = Path(__file__).resolve().parent
+csv_path = base_dir / "imdb_top_1000.csv"
+movies = pd.read_csv(csv_path)
 # Clean data - Runtime (str -> int)
 movies['Runtime'] = movies['Runtime'].str.replace(' min', '').astype(int)
 

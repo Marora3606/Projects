@@ -19,7 +19,9 @@ with st.sidebar:
 st.title("Analytics & Reporting")
 
 # Initialize OpenAI client
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+api_key = st.secrets.get("OPENAI_API_KEY")
+base_url = st.secrets.get("OPENAI_BASE_URL", "https://api.bluesminds.com/v1")
+client = OpenAI(api_key=api_key, base_url=base_url)
 
 def load_csv_data():
     conn = connect_database()
@@ -159,7 +161,7 @@ try:
                     user_prompt = f"Analyze this dataset:\n{text}"
                 
                 response = client.chat.completions.create(
-                    model="gpt-4o-mini",
+                    model="gpt-5.5",
                     messages=[
                         {"role": "system", "content": system_prompt},
                         {"role": "user", "content": user_prompt}

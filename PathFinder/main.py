@@ -1,22 +1,26 @@
-from graph import load_graph_from_json
+from graph import load_graph_from_json, select_graph_filename
 
 
 # TASK 5: RUNNING THE PROGRAM ON JSON GRAPHS
 def main():
-    # Ask user for filename (simple and safe, no sys.argv)
-    filename = input("Enter JSON filename: ")
+    while True:
+        try:
+            filename = select_graph_filename()
+            if filename is None:
+                print("Goodbye!")
+                break
 
-    try:
-        graph = load_graph_from_json(filename)
-        path, distance = graph.dijkstra("A", "Z")
+            graph = load_graph_from_json(filename)
+            path, distance = graph.dijkstra("A", "Z")
 
-        # SAME OUTPUT FORMAT AS BEFORE
-        print(f"File: {filename}")
-        print(f"Shortest path: {' -> '.join(path)}")
-        print(f"Total distance: {distance}")
+            print(f"File: {filename}")
+            print(f"Shortest path: {' -> '.join(path)}")
+            print(f"Total distance: {distance}")
 
-    except Exception as error:
-        print(f"Error while processing {filename}: {error}")
+        except Exception as error:
+            print(f"Error while processing the selected graph: {error}")
+
+        print()
 
 
 if __name__ == "__main__":

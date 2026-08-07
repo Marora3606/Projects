@@ -1,4 +1,6 @@
 import json
+import sys
+from pathlib import Path
 
 
 class Edge:
@@ -166,6 +168,89 @@ def load_graph_from_json(filename):
     """
     Reads triples from a JSON file and returns the Graph.
     """
-    with open(filename, "r", encoding="utf-8") as file:
+    path = Path(filename)
+    if not path.is_absolute():
+        path = Path(__file__).resolve().parent / path
+    with path.open("r", encoding="utf-8") as file:
         triples = json.load(file)
     return build_graph_from_triples(triples)
+
+
+def select_graph_filename():
+    """Prompt the user to choose one of the available graph JSON files."""
+    graph_dir = Path(__file__).resolve().parent
+    available_graphs = []
+
+    for path in graph_dir.glob("*.jsn"):
+        if path.name.startswith("graph_") or path.name == "my_graph.jsn":
+            available_graphs.append(path.name)
+
+    available_graphs = sorted(
+        available_graphs,
+        key=lambda name: (
+            0 if name == "my_graph.jsn" else 1,
+            int(name.replace("graph_", "").replace(".jsn", "")) if name.startswith("graph_") else 999,
+        ),
+    )
+
+    if not available_graphs:
+        raise FileNotFoundError("No graph JSON files were found in the PathFinder folder.")
+
+    print("Available graphs:")
+    for index, name in enumerate(available_graphs, start=1):
+        print(f"{index}. {name}")
+    print("0. Exit")
+
+    while True:
+        choice = input("Which graph do you want to run? Enter a number, filename, or 'exit': ").strip()
+
+        if not choice or choice.lower() in {"q", "quit", "exit"}:
+            return None
+
+        if choice.isdigit():
+            index = int(choice)
+            if index == 0:
+                return None
+            if 1 <= index <= len(available_graphs):
+                return available_graphs[index - 1]
+            print(f"Please enter a number between 1 and {len(available_graphs)}.")
+            continue
+
+        filename = choice if choice.endswith(".jsn") else f"{choice}.jsn"
+        if (graph_dir / filename).exists():
+            return filename
+
+        print(f"Graph file '{filename}' was not found.")
+
+
+def main():
+    """Run a sample shortest-path calculation when executed directly."""
+    if len(sys.argv) > 1:
+        filename = sys.argv[1]
+        graph = load_graph_from_json(filename)
+        path, distance = graph.dijkstra("A", "Z")
+        print(f"File: {filename}")
+        print(f"Shortest path: {' -> '.join(path)}")
+        print(f"Total distance: {distance}")
+        return
+
+    while True:
+        filename = select_graph_filename()
+        if filename is None:
+            print("Goodbye!")
+            break
+
+        try:
+            graph = load_graph_from_json(filename)
+            path, distance = graph.dijkstra("A", "Z")
+            print(f"File: {filename}")
+            print(f"Shortest path: {' -> '.join(path)}")
+            print(f"Total distance: {distance}")
+        except Exception as error:
+            print(f"Error while processing {filename}: {error}")
+
+        print()
+
+
+if __name__ == "__main__":
+    main()
