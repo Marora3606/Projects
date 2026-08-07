@@ -123,7 +123,7 @@ if not crime_df.empty:
     plt.ylabel('Number of Incidents')
     plt.grid(True, axis='y', linestyle='--', alpha=0.7)
     plt.tight_layout()
-    plt.savefig('q1c_graph1_time.png')
+    plt.savefig(os.path.join(base_dir, 'q1c_graph1_time.png'))
     print("\nGraph 1 (q1c_graph1_time.png) saved.")
 
     plt.figure(figsize=(10, 8))
@@ -135,7 +135,7 @@ if not crime_df.empty:
     plt.ylabel('Crime Type')
     plt.xscale('log')
     plt.tight_layout()
-    plt.savefig('q1c_graph2_crime_types.png')
+    plt.savefig(os.path.join(base_dir, 'q1c_graph2_crime_types.png'))
     print("Graph 2 (q1c_graph2_crime_types.png) saved.")
 
     print("\nInterpretation of Graphs:")
