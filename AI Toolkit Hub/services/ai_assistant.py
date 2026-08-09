@@ -23,7 +23,7 @@ class AIAssistant:
 
         try:
             response = self.client.chat.completions.create(
-                model="gpt-5.5",
+                model="meta/llama-3.1-8b-instruct",
                 messages=[
                     {"role": "system", "content": system_prompts.get(domain, system_prompts["general"])},
                     {"role": "user", "content": f"Please analyze this text: {text}"}
@@ -50,7 +50,7 @@ class AIAssistant:
             prompt = f"Generate a {report_type} report based on the following data: {json.dumps(data, indent=2)}"
 
             response = self.client.chat.completions.create(
-                model="gpt-5.5",
+                model="meta/llama-3.1-8b-instruct",
                 messages=[
                     {"role": "system", "content": "You are a professional report writer. Create clear, concise, and well-structured reports."},
                     {"role": "user", "content": prompt}
@@ -75,7 +75,7 @@ class AIAssistant:
         """Classify security incidents using AI"""
         try:
             response = self.client.chat.completions.create(
-                model="gpt-5.5",
+                model="meta/llama-3.1-8b-instruct",
                 messages=[
                     {"role": "system", "content": "You are a cybersecurity incident classifier. Classify the incident by severity (Critical, High, Medium, Low) and type (Malware, Phishing, DDoS, etc.). Provide brief justification."},
                     {"role": "user", "content": f"Classify this incident: {incident_description}"}
@@ -101,7 +101,7 @@ class AIAssistant:
             prompt = f"Situation: {situation}\nContext: {context}\n\nSuggest appropriate actions to resolve or handle this situation."
 
             response = self.client.chat.completions.create(
-                model="gpt-5.5",
+                model="meta/llama-3.1-8b-instruct",
                 messages=[
                     {"role": "system", "content": "You are an expert advisor. Provide practical, actionable suggestions for various situations."},
                     {"role": "user", "content": prompt}

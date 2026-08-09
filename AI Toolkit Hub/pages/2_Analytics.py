@@ -169,7 +169,7 @@ try:
                     user_prompt = f"Analyze this dataset:\n{text}"
                 
                 response = client.chat.completions.create(
-                    model="gpt-5.5",
+                    model="meta/llama-3.1-8b-instruct",
                     messages=[
                         {"role": "system", "content": system_prompt},
                         {"role": "user", "content": user_prompt}

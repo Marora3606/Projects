@@ -26,6 +26,9 @@ api_key = st.secrets.get("OPENAI_API_KEY")
 base_url = st.secrets.get("OPENAI_BASE_URL", "https://api.bluesminds.com/v1")
 client = OpenAI(api_key=api_key, base_url=base_url, timeout=30.0)
 
+# The only chat model available on this NVIDIA NIM account.
+CHAT_MODEL = "meta/llama-3.1-8b-instruct"
+
 # Title
 st.title("💬 ChatGPT - OpenAI API")
 st.caption("Powered by AI Models")
@@ -88,18 +91,14 @@ with st.sidebar:
         st.session_state.messages = []
         st.rerun()
     
-    # Model selection
-    try:
-        models_data = client.models.list()
-        available_models = [m.id for m in models_data.data] if models_data and hasattr(models_data, 'data') and len(models_data.data) > 0 else ["gpt-5.5", "gpt-4o-mini"]
-    except Exception:
-        available_models = ["gpt-5.5", "gpt-4o-mini", "gpt-4o"]
-
-    model = st.selectbox(
-        "Model",
-        available_models,
-        index=0
-    )
+    # Model
+    # NVIDIA NIM's /v1/models endpoint advertises ~100 models, but this account
+    # is only entitled to one of them -- every other model returns
+    # HTTP 404 "Not found for account". Verified with check_models.py, so the
+    # model is pinned here rather than fetched, to avoid offering a dropdown
+    # full of options that fail at request time.
+    model = CHAT_MODEL
+    st.caption(f"Model: `{model}`")
 
 # Display all previous messages
 for message in st.session_state.messages:
