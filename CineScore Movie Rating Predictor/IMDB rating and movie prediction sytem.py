@@ -1,3 +1,11 @@
+# =============================================================
+# Module: IMDB rating and movie prediction sytem.py
+# Project Area: CineScore Movie Rating Predictor
+# Purpose: Implements the runtime logic for this project component.
+# Notes: Keep this file focused on one responsibility so future
+# maintenance remains straightforward.
+# =============================================================
+
 import os
 from pathlib import Path
 
@@ -65,6 +73,8 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # Train all models (print for progress checking)
 print("Training models...")
 for name, model in models.items():
+    # Fit each model on the same train/test split so the consistency of the
+    # metrics comes from a controlled experimental setup.
     model.fit(X_train, y_train)
     print(f"✓ {name} trained")
 
@@ -77,6 +87,8 @@ print("-" * 40)
 # Store evaluation metrics for visualization
 model_names, r2_scores, mae_scores, all_predictions = [], [], [], []
 for name, model in models.items():
+    # Create predictions on the held-out test points, then compare those
+    # predictions against the real ratings to extract accuracy signals.
     preds = model.predict(X_test)
     r2, mae = r2_score(y_test, preds), mean_absolute_error(y_test, preds) # R² score evaluation # Mean Absolute Error evaluation showing average error in rating points
     print(f"{name}:\n  R² Score: {r2:.4f}\n  MAE: {mae:.4f} (average error in rating points)\n")

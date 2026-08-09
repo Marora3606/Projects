@@ -1,3 +1,11 @@
+# =============================================================
+# Module: incidents.py
+# Project Area: AI Toolkit Hub
+# Purpose: Implements the runtime logic for this project component.
+# Notes: Keep this file focused on one responsibility so future
+# maintenance remains straightforward.
+# =============================================================
+
 import pandas as pd
 from database.db import connect_database
 

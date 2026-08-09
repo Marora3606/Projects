@@ -1,3 +1,11 @@
+# =============================================================
+# Module: main.py
+# Project Area: PathFinder
+# Purpose: Implements the runtime logic for this project component.
+# Notes: Keep this file focused on one responsibility so future
+# maintenance remains straightforward.
+# =============================================================
+
 from graph import load_graph_from_json, select_graph_filename
 
 

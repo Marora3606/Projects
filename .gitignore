@@ -5,6 +5,8 @@
 # Python virtual environments
 .venv/
 **/.venv/
+venv/
+**/venv/
 
 # Python cache
 __pycache__/
@@ -13,3 +15,42 @@ __pycache__/
 
 # Git metadata from nested repositories
 **/.git/
+
+# ---------------------------------------------------------------------------
+# SECRETS — never commit these.
+# secrets.toml held a live OpenAI key that was committed and pushed.
+# Commit the .example template instead so others know which keys are needed.
+# ---------------------------------------------------------------------------
+.env
+**/.env
+**/.streamlit/secrets.toml
+
+# ---------------------------------------------------------------------------
+# CREDENTIALS & DATABASES
+# users.txt contained real usernames + bcrypt hashes. SQLite files contain
+# live application data. Neither belongs in version control.
+# ---------------------------------------------------------------------------
+**/users.txt
+*.db
+**/*.db
+*.sqlite
+*.sqlite3
+
+# ---------------------------------------------------------------------------
+# LARGE DATASETS
+# GitHub rejects files over 100MB and the repo had ~500MB of CSVs plus a 95MB
+# zip. Keep data on disk, out of git. See FIXES.md for where each came from.
+# ---------------------------------------------------------------------------
+CrimeScope/20*/*.csv
+CrimeScope/*.zip
+SmartChef Recipe Recommendation System/recipes_final.csv
+*.zip
+
+# IDE
+.idea/
+**/.idea/
+.vscode/
+
+# Backups from the 2026-08-09 fix pass
+*.bak
+**/*.bak

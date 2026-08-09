@@ -1,3 +1,11 @@
+# =============================================================
+# Module: graph.py
+# Project Area: PathFinder
+# Purpose: Implements the runtime logic for this project component.
+# Notes: Keep this file focused on one responsibility so future
+# maintenance remains straightforward.
+# =============================================================
+
 import json
 import sys
 from pathlib import Path
@@ -81,6 +89,8 @@ class Graph:
         Finds the shortest path between start and end vertices.
         Returns (path, distance).
         """
+        # Normalize the caller-supplied vertex names so the graph can compare
+        # them safely across all input shapes.
         start = str(start)
         end = str(end)
 
@@ -129,6 +139,8 @@ class Graph:
             # Relax edges: update distances to neighbouring vertices if a shorter route is found.
             for neighbour, weight in self.weighted_neighbours(current_vertex):
                 if neighbour in unvisited:
+                    # Try the route through the current vertex and record it only
+                    # when it is better than the already-known path.
                     new_distance = distances[current_vertex] + weight
                     if new_distance < distances[neighbour]:
                         distances[neighbour] = new_distance

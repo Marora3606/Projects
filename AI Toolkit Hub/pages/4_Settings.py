@@ -1,3 +1,11 @@
+# =============================================================
+# Module: 4_Settings.py
+# Project Area: AI Toolkit Hub
+# Purpose: Implements the runtime logic for this project component.
+# Notes: Keep this file focused on one responsibility so future
+# maintenance remains straightforward.
+# =============================================================
+
 import streamlit as st
 import bcrypt
 from database.db import connect_database

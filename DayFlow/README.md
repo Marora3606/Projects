@@ -1,51 +1,71 @@
-# DayFlow - Task Scheduler & Daily Planner
+# DayFlow — Task Scheduler & Daily Planner
 
-A Python command-line task scheduling and productivity management application that helps users organize, prioritize, and track daily tasks.
+A command-line task manager with priorities, categories, due dates and JSON
+persistence. Standard library only.
 
----
-
-## 🌟 Key Features
-
-* 📝 **Task Management:** Add, edit, view, search, and remove daily tasks.
-* 🎯 **Priority & Category Scoping:** Classify tasks by priority (`High`, `Medium`, `Low`) and category (`Work`, `Personal`, `Health`, `Study`, etc.).
-* 📅 **DueDate & Status Tracking:** Assign due dates and track completion status (`Pending`, `In Progress`, `Completed`).
-* 🔍 **Search & Filtering:** Search tasks by title, category, priority, or status.
-* 💾 **JSON Persistence:** Automatically persists task data to `tasks.json` so data survives between sessions.
-* ⚡ **Zero External Dependencies:** Built entirely using Python 3 standard library modules.
+Small, but the most cleanly separated codebase in this workspace — the task
+model, the scheduling logic, the menu and the helpers each live in their own
+module, and none of them reach into the others' concerns.
 
 ---
 
-## 📁 Project Structure
+## 🌟 What it does
+
+* 📝 **Task management** — add, edit, view, search and remove tasks.
+* 🎯 **Priorities and categories** — `High` / `Medium` / `Low`, and `Work`,
+  `Personal`, `Health`, `Study`.
+* 📅 **Due dates and status** — `Pending`, `In Progress`, `Completed`, with date
+  validation on input.
+* 🔍 **Search and filter** — by title, category, priority or status.
+* 💾 **JSON persistence** — everything is written to `tasks.json`, so state
+  survives between runs.
+* ⚡ **No dependencies** — `json`, `datetime`, `os`, `typing` only.
+
+---
+
+## 📁 Structure
 
 ```text
 DayFlow/
-├── main.py              # CLI Menu entry point
-├── menu.py              # User interface menu handlers
-├── scheduler.py         # TaskScheduler logic and JSON persistence
-├── task.py              # Task class model definition
-├── utils.py             # Date validation & formatting helpers
-├── tasks.json           # JSON data storage
-├── requirements.txt     # Dependency notice (Standard Library)
-└── README.md            # Project documentation
+├── main.py            # Entry point
+├── menu.py            # CLI menu handlers and user interaction
+├── scheduler.py       # TaskScheduler: task collection + JSON load/save
+├── task.py            # Task class
+├── utils.py           # Date validation and formatting helpers
+├── tasks.json         # Data store (created on first run)
+├── requirements.txt   # (standard library only)
+└── README.md
 ```
 
----
-
-## 🛠️ Setup & Execution
-
-1. **Prerequisites:**
-   Python 3.8+ (No external third-party packages required).
-
-2. **Run the Application:**
-   ```bash
-   python main.py
-   ```
+**Design note:** the separation is the point. `task.py` knows what a task *is*.
+`scheduler.py` knows how a collection of tasks is stored and queried. `menu.py`
+knows how to talk to a human. Swapping the CLI for a web UI would mean replacing
+`menu.py` and nothing else — that is what separation of concerns buys you.
 
 ---
 
-## 📋 Requirements (`requirements.txt`)
+## 🔧 Setup
 
-This project relies exclusively on standard Python modules (`json`, `datetime`, `os`, `typing`). No `pip install` steps are necessary.
+```bash
+cd DayFlow
+python main.py
+```
+
+Requires **Python 3.8+**. Nothing to install.
+
+---
+
+## ⚠️ Known limitations
+
+- **Rewrites the whole JSON file on every change.** Fine for hundreds of tasks,
+  poor beyond that, and a crash mid-write can corrupt the file. Writing to a
+  temp file and atomically renaming would make saves crash-safe.
+- **No concurrency handling.** Two instances running at once will overwrite each
+  other's changes.
+- **No undo.** Deletions are immediate and permanent.
+- **No recurring tasks** — every task is a one-off.
+- **No tests.** `scheduler.py` is pure logic over in-memory data and would be
+  easy to cover.
 
 ---
 

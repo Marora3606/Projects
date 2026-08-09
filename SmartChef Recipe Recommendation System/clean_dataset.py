@@ -1,3 +1,11 @@
+# =============================================================
+# Module: clean_dataset.py
+# Project Area: SmartChef Recipe Recommendation System
+# Purpose: Implements the runtime logic for this project component.
+# Notes: Keep this file focused on one responsibility so future
+# maintenance remains straightforward.
+# =============================================================
+
 import pandas as pd
 
 # Load the original dataset

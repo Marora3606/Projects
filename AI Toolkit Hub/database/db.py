@@ -1,3 +1,11 @@
+# =============================================================
+# Module: db.py
+# Project Area: AI Toolkit Hub
+# Purpose: Implements the runtime logic for this project component.
+# Notes: Keep this file focused on one responsibility so future
+# maintenance remains straightforward.
+# =============================================================
+
 """Database Connection Module"""
 
 import sqlite3

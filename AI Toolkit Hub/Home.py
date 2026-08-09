@@ -1,3 +1,11 @@
+# =============================================================
+# Module: Home.py
+# Project Area: AI Toolkit Hub
+# Purpose: Implements the runtime logic for this project component.
+# Notes: Keep this file focused on one responsibility so future
+# maintenance remains straightforward.
+# =============================================================
+
 import streamlit as st
 import pandas as pd
 import sys
@@ -37,6 +45,9 @@ if project_root not in sys.path:
     sys.path.append(project_root)
 
 from services.user_service import login_user, register_user
+# LEARN: needed below to put the REAL user id into the JWT instead of a
+# hardcoded 1. See the login handler further down.
+from models.users import get_user_by_username
 from services.auth_manager import auth_manager
 from services.ai_assistant import AIAssistant
 
@@ -99,7 +110,23 @@ def login_page():
                         
                         if success:
                             # Generate JWT token
-                            user_id = 1  # In real app, get from database
+                            # =============================================
+                            # LEARN: This line used to be:
+                            #     user_id = 1  # In real app, get from database
+                            # so EVERY user's token claimed to be user 1. Any
+                            # code that later trusted token["user_id"] — to load
+                            # "my incidents" or "my settings" — would have shown
+                            # user 1's data to everybody.
+                            # LEARN: The row layout is (id, username,
+                            # password_hash, role), so index 0 is the id. Using
+                            # positional indexes like this is fragile: add a
+                            # column in the middle and every index shifts. The
+                            # sturdier fix is sqlite3.Row or a named tuple, so
+                            # you can write user["id"] instead. Left as-is for
+                            # now to keep this change small.
+                            # =============================================
+                            user_row = get_user_by_username(username)
+                            user_id = user_row[0] if user_row else None
                             token = auth_manager.generate_token(user_id, username, message)
                             
                             st.session_state.logged_in = True

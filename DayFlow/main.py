@@ -1,3 +1,11 @@
+# =============================================================
+# Module: main.py
+# Project Area: DayFlow
+# Purpose: Implements the runtime logic for this project component.
+# Notes: Keep this file focused on one responsibility so future
+# maintenance remains straightforward.
+# =============================================================
+
 from menu import (
     add_task_menu,
     edit_task_menu,

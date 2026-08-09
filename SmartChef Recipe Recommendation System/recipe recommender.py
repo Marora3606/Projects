@@ -128,6 +128,8 @@ def recommend_recipes(user_profile):
     recommendations = []
     total_recipes = len(recipes)
 
+    # Walk through every recipe in the loaded dataset and evaluate it against
+    # the user's allergy filter, preference tags, and pantry overlap.
     for _, recipe in recipes.iterrows():
         recipe_name = str(recipe["Title"])
         category_text = str(recipe["Category"]).lower()
@@ -147,6 +149,8 @@ def recommend_recipes(user_profile):
             user_profile.preference not in {"surprise me", "no preference"}
             and user_profile.preference in category_tags
         ):
+            # Preference matches get a small ranking boost to make the top
+            # recommendations more intuitive for the user.
             score += 15
         score = min(score, 100)
 

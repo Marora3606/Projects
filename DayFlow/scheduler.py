@@ -1,3 +1,11 @@
+# =============================================================
+# Module: scheduler.py
+# Project Area: DayFlow
+# Purpose: Implements the runtime logic for this project component.
+# Notes: Keep this file focused on one responsibility so future
+# maintenance remains straightforward.
+# =============================================================
+
 from datetime import datetime, timedelta
 import json
 from pathlib import Path
@@ -120,6 +128,8 @@ class TaskScheduler:
 
     def get_upcoming_tasks(self, days=UPCOMING_DAYS):
         """Return pending tasks due within the next number of days."""
+        # Convert the day window into an inclusive date range so the filter
+        # can compare each task's due date against the current calendar date.
         today = datetime.now().date()
         end_date = today + timedelta(days=days)
         return [
@@ -145,6 +155,8 @@ class TaskScheduler:
 
     def get_statistics(self):
         """Return summary statistics for the current task list."""
+        # Count every task first, then derive the progress indicators from
+        # that dataset instead of making a second pass over the UI data.
         total = len(self.tasks)
         completed = sum(1 for task in self.tasks if task.completed)
         pending = total - completed

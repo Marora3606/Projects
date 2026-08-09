@@ -1,8 +1,18 @@
+# =============================================================
+# Module: schema.py
+# Project Area: AI Toolkit Hub
+# Purpose: Implements the runtime logic for this project component.
+# Notes: Keep this file focused on one responsibility so future
+# maintenance remains straightforward.
+# =============================================================
+
 from database.db import connect_database
 
 
 def create_users_table(conn):
+    # Open a per-call database cursor for the DDL statement.
     cursor = conn.cursor()
+    # The users table stores the authentication identity used by Home.py.
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -16,6 +26,7 @@ def create_users_table(conn):
 
 
 def create_cyber_incidents_table(conn):
+    # Every incident row is a security-event record from the operational dashboard.
     cursor = conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS cyber_incidents (
@@ -33,6 +44,7 @@ def create_cyber_incidents_table(conn):
 
 
 def create_datasets_metadata_table(conn):
+    # This schema stores the metadata rows used for analytics and dashboard rendering.
     cursor = conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS datasets_metadata (
@@ -48,6 +60,7 @@ def create_datasets_metadata_table(conn):
 
 
 def create_it_tickets_table(conn):
+    # Support ticket status fields become the dashboard objects for operations views.
     cursor = conn.cursor()
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS it_tickets (
@@ -63,6 +76,7 @@ def create_it_tickets_table(conn):
 
 
 def create_all_tables(conn):
+    # The application relies on the four data stores being present before pages load.
     create_users_table(conn)
     create_cyber_incidents_table(conn)
     create_datasets_metadata_table(conn)

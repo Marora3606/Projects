@@ -1,3 +1,11 @@
+# =============================================================
+# Module: menu.py
+# Project Area: DayFlow
+# Purpose: Implements the runtime logic for this project component.
+# Notes: Keep this file focused on one responsibility so future
+# maintenance remains straightforward.
+# =============================================================
+
 from datetime import datetime
 
 from scheduler import UPCOMING_DAYS

@@ -246,8 +246,10 @@ def query(triples, subject=None, relation=None, object=None):
     None acts as wildcard for subject/predicate/object.
     Example: query(knowledge, subject="Alan Turing") -> returns triples where subject matches.
     """
+    # Build a candidate answer set by filtering over each relation fact in memory.
     results = []
     for (s,r,o) in triples:
+        # Apply each search filter only when the caller provided a non-null value.
         if subject is not None and s != subject:
             continue
         if relation is not None and r != relation:
